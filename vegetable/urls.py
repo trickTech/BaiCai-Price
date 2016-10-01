@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from search.views import today
+from search.views import (
+    today,
+    vegetable_history
+)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^apis/vegetable/today', today),
+    url(r'^api/record/today', today),
+    url(r'^api/vegetable/(?P<veg_id>[^/]+)', vegetable_history),
 ]
