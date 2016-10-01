@@ -15,7 +15,7 @@ class Vegetable(models.Model):
 
 
 class Record(models.Model):
-    veg_name = models.CharField(max_length=16, verbose_name='蔬菜名')
+    veg_name = models.CharField(max_length=16, default='', verbose_name='蔬菜名')
     vegetable = models.ForeignKey(Vegetable, verbose_name='所属蔬菜')
 
     lowest_price = models.IntegerField(verbose_name='最低价格')
