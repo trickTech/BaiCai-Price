@@ -64,4 +64,6 @@ def vegetable_history(request, veg_id):
 
     record = [v.as_dict() for v in record]
 
+    record = create_pageinator(request, record)
+
     return JsonResponse(record, safe=False)
