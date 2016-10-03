@@ -5,6 +5,23 @@ from search.models import Vegetable, Record
 from django.core.exceptions import ObjectDoesNotExist
 
 
+def order_by(request, query):
+    attribute = request.GET.get('order_by')
+    reversed = request.GET.get('reversed')
+
+    if attribute:
+        if reversed and reversed.lower() == 'true':
+            attribute = '-' + attribute
+        try:
+            query = query.order_by(attribute)
+        except Exception:
+            pass
+    else:
+        return query
+
+    return query
+
+
 def cross_site(func):
     def add_cross_site(*args, **kwargs):
         response = func(*args, **kwargs)
@@ -42,6 +59,7 @@ def create_pageinator(request, record_list, per_page=15):
 @cross_site
 def today(request):
     record_list = Record.objects.filter(created_at__day=datetime.date.today().day)
+    record_list = order_by(request, record_list)
     record_list = [v.as_dict() for v in record_list]
 
     records = create_pageinator(request, record_list)
@@ -59,6 +77,7 @@ def vegetable_history(request, veg_id):
     try:
         vegetable = Vegetable.objects.get(pk=veg_id)
         record = vegetable.record_set.all()
+        record = order_by(request, record)
     except ObjectDoesNotExist:
         return JsonResponse([], safe=False)
 

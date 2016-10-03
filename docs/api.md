@@ -7,10 +7,26 @@
 
     api/vegetable/1
 
+## 附加参数
+### 分页
+
 分页使用url参数,key为`page`
 
     api/vegetable/1?page=1
-    
+
+### 排序
+
+排序使用url参数,key为`order_by`,后跟attribute名
+
+    api/record/today?order_by=avg_price
+
+attribute不存在则不排序
+
+是否翻转顺序，key为`reversed`,值为`true`(不区分大小写)
+
+    api/record/today?order_by=avg_price&reversed=true
+
+
 ## 接口
 ### record/today
 #### 描述：
