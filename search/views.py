@@ -28,7 +28,15 @@ def create_pageinator(request, record_list, per_page=15):
         record = paginator.page(1)
     except EmptyPage:
         record = paginator.page(paginator.num_pages)
-    return record.object_list
+
+    response = {
+        'total_page': paginator.num_pages,
+        'element_per_page': per_page
+    }
+
+    response['content'] = record.object_list
+
+    return response
 
 
 @cross_site
