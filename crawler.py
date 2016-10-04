@@ -15,13 +15,13 @@ from django.db import transaction
 def crawler_veg_info():
     url = "http://www.114guoshu.com/hangqing/xinfadisc/"
     content = requests.get(url).text
-    soup = bs4.BeautifulSoup(content, 'lxml')
+    soup = bs4.BeautifulSoup(content)
     newest_report = soup.findAll('li', {'class': 'catlist_li'})[0]
     tag_a = newest_report.findChild('a')
     report_url = tag_a.get('href')
     report_content = requests.get(report_url).content
     report_content = report_content.decode('GBK')
-    report_soup = bs4.BeautifulSoup(report_content, 'lxml')
+    report_soup = bs4.BeautifulSoup(report_content)
     table = report_soup.findAll('tr')
     table_data = []
     for row in table[1:]:
