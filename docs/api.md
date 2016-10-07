@@ -59,3 +59,31 @@ attribute不存在则不排序
 		}
 	]
 
+### vegetable/search (POST)
+#### 描述
+搜索蔬菜并返回最新的记录
+
+#### 参数
+    'veg_name' : '蔬菜名'
+
+#### 返回值
+    {'content': [{'avg_price': 105,
+       'created_at': '2016-10-04',
+       'highest_price': 130,
+       'id': 17,
+       'lowest_price': 80,
+       'veg_name': '菜花'},
+      {'avg_price': 130,
+       'created_at': '2016-10-04',
+       'highest_price': 180,
+       'id': 18,
+       'lowest_price': 80,
+       'veg_name': '绿菜花'},
+      {'avg_price': 165,
+       'created_at': '2016-10-04',
+       'highest_price': 180,
+       'id': 79,
+       'lowest_price': 150,
+       'veg_name': '黄心菜'}],
+     'element_per_page': 15,
+     'total_page': 2}

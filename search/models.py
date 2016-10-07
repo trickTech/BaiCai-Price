@@ -30,6 +30,7 @@ low: {}\t avg: {}\t high: {}\t
 
     def as_dict(self):
         return {
+            'id': self.vegetable_id,
             'veg_name': self.veg_name,
             'lowest_price': self.lowest_price,
             'avg_price': self.avg_price,

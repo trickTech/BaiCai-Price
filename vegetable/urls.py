@@ -17,11 +17,13 @@ from django.conf.urls import url
 from django.contrib import admin
 from search.views import (
     today,
-    vegetable_history
+    vegetable_history,
+    search
 )
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/record/today', today),
+    url(r'^api/vegetable/search/', search),
     url(r'^api/vegetable/(?P<veg_id>[^/]+)', vegetable_history),
 ]

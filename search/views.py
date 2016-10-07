@@ -3,6 +3,7 @@ from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 import datetime
 from search.models import Vegetable, Record
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Max
 
 
 def order_by(request, query):
@@ -86,3 +87,15 @@ def vegetable_history(request, veg_id):
     record = create_pageinator(request, record)
 
     return JsonResponse(record, safe=False)
+
+
+@cross_site
+def search(request):
+    slug = request.POST.get('veg_name')
+    records = Record.objects.raw(
+        'select * from search_record where veg_name like %s group by vegetable_id order by created_at',
+        ['%{}%'.format(slug)])
+    records = [i.as_dict() for i in records]
+    records = create_pageinator(request, records)
+
+    return JsonResponse(records, safe=False)
