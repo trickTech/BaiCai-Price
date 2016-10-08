@@ -58,3 +58,7 @@ def main():
     ssh_client = create_ssh_client()
     remote_deploy(ssh_client, cmd)
     run(ssh_client)
+
+if __name__ == "__main__":
+	main()
+	
