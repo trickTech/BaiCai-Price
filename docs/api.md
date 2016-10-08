@@ -87,3 +87,11 @@ attribute不存在则不排序
        'veg_name': '黄心菜'}],
      'element_per_page': 15,
      'total_page': 2}
+
+### record/history/date
+#### 描述
+获取某日的所有记录
+#### 参数
+date : %Y-%m-%d: 2015-4-22
+#### 返回值
+

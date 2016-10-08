@@ -18,7 +18,8 @@ from django.contrib import admin
 from search.views import (
     today,
     vegetable_history,
-    search
+    search,
+    record_history,
 )
 
 urlpatterns = [
@@ -26,4 +27,5 @@ urlpatterns = [
     url(r'^api/record/today', today),
     url(r'^api/vegetable/search/', search),
     url(r'^api/vegetable/(?P<veg_id>[^/]+)', vegetable_history),
+    url(r'api/record/history/(?P<date>[\w\-]+)/$', record_history),
 ]

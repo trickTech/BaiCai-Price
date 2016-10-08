@@ -99,3 +99,16 @@ def search(request):
     records = create_pageinator(request, records)
 
     return JsonResponse(records, safe=False)
+
+@cross_site
+def record_history(request, date):
+    try:
+        date = datetime.datetime.strptime(date,'%Y-%m-%d').date()
+    except ValueError:
+        return JsonResponse({'status':-1,'error':'日期格式有误'})
+    
+    records = Record.objects.filter(created_at=date).all()
+    records = [i.as_dict() for i in records]
+    records = create_pageinator(request, records)
+
+    return JsonResponse(records, safe=False)
