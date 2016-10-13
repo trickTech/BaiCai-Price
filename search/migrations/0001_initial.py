@@ -47,6 +47,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='record',
             name='vegetable',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.Vegetable', verbose_name='所属蔬菜'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.models.Item', verbose_name='所属蔬菜'),
         ),
     ]

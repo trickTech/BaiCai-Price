@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 import datetime
-from search.models import Vegetable, Record
+from search.models import Item, Record
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 
@@ -76,7 +76,7 @@ def vegetable_history(request, veg_id):
     vegetable = None
 
     try:
-        vegetable = Vegetable.objects.get(pk=veg_id)
+        vegetable = Item.objects.get(pk=veg_id)
         record = vegetable.record_set.all()
         record = order_by(request, record)
     except ObjectDoesNotExist:

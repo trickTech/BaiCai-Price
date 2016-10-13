@@ -5,3 +5,5 @@ __pycache__
 *.pyc
 const.py
 *.tar.gz
+.ipynb*
+*.ipynb
