@@ -7,6 +7,7 @@ class ItemType(models.Model):
     物品所属类别
     """
     type_name = models.CharField(max_length=16, db_index=True)
+    created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
 
     def __str__(self):
         return "<Item Type : {}>".format(self.type_name)
@@ -23,7 +24,7 @@ class Item(models.Model):
     item_name = models.CharField(max_length=16, verbose_name='商品名', db_index=True)
     item_unit = models.CharField(max_length=8, verbose_name='商品单位', default='')
     item_type = models.ForeignKey(ItemType, verbose_name='所属类型', blank=True, null=True)
-    created_at = models.DateField(verbose_name='创建日期', auto_now=True)
+    created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
 
     def __str__(self):
         return "id: {} item: {}".format(self.id, self.item_name)
@@ -46,7 +47,7 @@ class Record(models.Model):
     avg_price = models.IntegerField(verbose_name='平均价格')
     highest_price = models.IntegerField(verbose_name='最高价格')
     recorded_at = models.DateField(verbose_name='记录日期', auto_now=True)
-    created_at = models.DateField(verbose_name='创建日期', auto_now=True)
+    created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
 
     def __str__(self):
         return """item record: {}

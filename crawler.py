@@ -7,6 +7,8 @@ import string
 import logging
 import time
 
+logging.basicConfig(filename='crawler.log')
+
 logger = logging.getLogger(__name__)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vegetable.settings")
@@ -24,8 +26,12 @@ from spider.const import (
     INDEX_TYPE_MAPPER
 )
 
+CREATE_DATETIME = datetime.datetime.now()
 
-def veg_spider(item_type, oldest_date):
+
+def veg_spider(item_type, oldest_date=None):
+    if oldest_date is None:
+        oldest_date = datetime.datetime.now().date()
     if not isinstance(oldest_date, datetime.date):
         try:
             oldest_date = datetime.datetime.strptime(oldest_date, '%Y-%m-%d').date()
@@ -54,7 +60,6 @@ def veg_spider(item_type, oldest_date):
                 stop = True
                 break
 
-        print(rows)
         records.extend(rows)
         logger.info('crawling page {} success'.format(page))
         page += 1
@@ -67,13 +72,13 @@ def veg_spider(item_type, oldest_date):
 @transaction.atomic
 def store_date(rows):
     for row in rows:
-        item_type = ItemType.objects.get_or_create(type_name=row['item_type'])[0]
-        item_type.save()
-        item = Item.objects.get_or_create(item_name=row['item_name'], item_unit=row['unit'], item_type=item_type)[0]
-        item.save()
+        item_type = \
+            ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
+        item = Item.objects.get_or_create(item_name=row['item_name'], item_unit=row['unit'], item_type=item_type,
+                                          defaults={'created_at': CREATE_DATETIME})[0]
         row.pop('item', None)
         row.pop('item_type', None)
-        record = Record.objects.get_or_create(item=item, **row)[0]
+        record = Record.objects.get_or_create(item=item, recorded_at=row['recorded_at'], defaults=row)[0]
         record.save()
 
 
@@ -91,7 +96,7 @@ def parse_page(raw_html, item_type):
         row_dict['lowest_price'] = int(float(row_dict['lowest_price']) * 100)
         row_dict['avg_price'] = int(float(row_dict['avg_price']) * 100)
         row_dict['highest_price'] = int(float(row_dict['highest_price']) * 100)
-        row_dict['item_type'] = item_type
+        row_dict['item_type'] = INDEX_TYPE_MAPPER.get(item_type)
         try:
             row_dict['recorded_at'] = datetime.datetime.strptime(row_dict['recorded_at'], '%Y-%m-%d').date()
         except ValueError:
@@ -114,3 +119,13 @@ def parse_page(raw_html, item_type):
         rows.append(row)
 
     return rows
+
+
+def main(oldest_date=None):
+    for i in INDEX_TYPE_MAPPER:
+        records = veg_spider(i, oldest_date)
+        store_date(records)
+
+
+if __name__ == "__main__":
+    main()
