@@ -26,10 +26,11 @@ from spider.const import (
 
 
 def veg_spider(item_type, oldest_date):
-    try:
-        oldest_date = datetime.datetime.strptime(oldest_date, '%Y-%m-%d').date()
-    except ValueError:
-        raise Exception("Oldest_date not invalid Error")
+    if not isinstance(oldest_date, datetime.date):
+        try:
+            oldest_date = datetime.datetime.strptime(oldest_date, '%Y-%m-%d').date()
+        except ValueError:
+            raise Exception("Oldest_date not invalid Error")
 
     stop = False
     page = 0
