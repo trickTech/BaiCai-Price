@@ -13,7 +13,9 @@ class ItemType(models.Model):
 
 
 class Item(models.Model):
-    """"""
+    """
+    物品
+    """
     # class Meta:
     #     unique_together = ['item_name', 'item_type']
 
@@ -27,6 +29,9 @@ class Item(models.Model):
 
 
 class Record(models.Model):
+    """
+    记录
+    """
     # class Meta:
     #     unique_together = ['item', 'created_at']
 
