@@ -6,6 +6,7 @@ import datetime
 import string
 import logging
 import time
+import sys
 
 logging.basicConfig(filename='crawler.log', level=logging.INFO)
 
@@ -130,4 +131,7 @@ def main(oldest_date=None):
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else :
+        main()
