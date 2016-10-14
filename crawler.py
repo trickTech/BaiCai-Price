@@ -7,7 +7,7 @@ import string
 import logging
 import time
 
-logging.basicConfig(filename='crawler.log')
+logging.basicConfig(filename='crawler.log', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +71,7 @@ def veg_spider(item_type, oldest_date=None):
 
 @transaction.atomic
 def store_date(rows):
+    counter = 0
     for row in rows:
         item_type = \
             ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
@@ -78,8 +79,9 @@ def store_date(rows):
                                           defaults={'created_at': CREATE_DATETIME})[0]
         row.pop('item', None)
         row.pop('item_type', None)
-        record = Record.objects.get_or_create(item=item, recorded_at=row['recorded_at'], defaults=row)[0]
-        record.save()
+        record, result = Record.objects.get_or_create(item=item, recorded_at=row['recorded_at'], defaults=row)
+        counter += 1 if result else 0
+    logging.info('add {} records successfully'.format(counter))
 
 
 def parse_page(raw_html, item_type):
