@@ -34,14 +34,20 @@ attribute不存在则不排序
 获取当天的蔬菜记录
     
 #### 返回值：
-
-    [
-    	{"lowest_price": 350,
-    	 "created_at": "2016-10-01",
-    	 "veg_name": "\u849c\u82d7",
-    	 "avg_price": 445,
-    	 "highest_price": 540}
-	]
+    
+    {
+    "element_per_page": 15,
+    "total_page": 26,
+    "content": [
+    {
+    "recorded_at": "2016-10-14",
+    "id": 19,
+    "item_name": "油菜",
+    "avg_price": 114,
+    "lowest_price": 100,
+    "highest_price": 130
+    },]
+    }
 	
 ### vegetable/veg_id
 #### 描述
@@ -49,22 +55,35 @@ attribute不存在则不排序
 
 #### 返回值
 
-	[
-		{
-			"lowest_price": 350,
-			"created_at": "2016-10-01",
-			"veg_name": "\u849c\u82d7",
-			"avg_price": 445,
-			"highest_price": 540
-		}
-	]
+    {
+    "element_per_page": 15,
+    "total_page": 1,
+    "content": [
+    {
+    "recorded_at": "2016-10-13",
+    "id": 1,
+    "item_name": "大白菜",
+    "avg_price": 45,
+    "lowest_price": 30,
+    "highest_price": 60
+    },
+    {
+    "recorded_at": "2016-10-14",
+    "id": 1,
+    "item_name": "大白菜",
+    "avg_price": 43,
+    "lowest_price": 35,
+    "highest_price": 50
+    }
+    ]
+    }
 
 ### vegetable/search (POST)
 #### 描述
 搜索蔬菜并返回最新的记录
 
 #### 参数
-    'veg_name' : '蔬菜名'
+    'item_name' : '物品名'
 
 #### 返回值
     {'content': [{'avg_price': 105,
@@ -94,4 +113,18 @@ attribute不存在则不排序
 #### 参数
 date : %Y-%m-%d: 2015-4-22
 #### 返回值
+    
+    {
+    "element_per_page": 15,
+    "total_page": 26,
+    "content": [
+    {
+    "highest_price": 130,
+    "avg_price": 114,
+    "lowest_price": 100,
+    "id": 19,
+    "item_name": "油菜",
+    "recorded_at": "2016-10-14"
+    },]
+    }
 
