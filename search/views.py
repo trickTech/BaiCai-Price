@@ -72,7 +72,7 @@ def today(request):
 
 
 @cross_site
-def vegetable_history(request, veg_id):
+def item_history(request, veg_id):
     vegetable = None
 
     try:
@@ -93,7 +93,7 @@ def vegetable_history(request, veg_id):
 def search(request):
     slug = request.POST.get('veg_name')
     records = Record.objects.raw(
-        'select * from search_record where veg_name like %s group by vegetable_id order by created_at',
+        'select * from search_item where item_name like %s group by item_id order by created_at',
         ['%{}%'.format(slug)])
     records = [i.as_dict() for i in records]
     records = create_pageinator(request, records)
@@ -108,7 +108,7 @@ def record_history(request, date):
     except ValueError:
         return JsonResponse({'status': -1, 'error': '日期格式有误'})
 
-    records = Record.objects.filter(created_at=date).all()
+    records = Record.objects.filter(recorded_at=date).all()
     records = [i.as_dict() for i in records]
     records = create_pageinator(request, records)
 
