@@ -91,9 +91,9 @@ def item_history(request, veg_id):
 
 @cross_site
 def search(request):
-    slug = request.POST.get('veg_name')
+    slug = request.POST.get('item_name')
     records = Record.objects.raw(
-        'select * from search_item where item_name like %s group by item_id order by created_at',
+        'select * from search_record where item_name like %s group by item_id order by created_at',
         ['%{}%'.format(slug)])
     records = [i.as_dict() for i in records]
     records = create_pageinator(request, records)
