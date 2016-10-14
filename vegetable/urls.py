@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from search.views import (
     today,
-    vegetable_history,
+    item_history,
     search,
     record_history,
 )
@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/record/today', today),
     url(r'^api/vegetable/search/', search),
-    url(r'^api/vegetable/(?P<veg_id>[^/]+)', vegetable_history),
+    url(r'^api/vegetable/(?P<veg_id>[^/]+)', item_history),
     url(r'api/record/history/(?P<date>[\w\-]+)/$', record_history),
 ]
