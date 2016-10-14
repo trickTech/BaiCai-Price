@@ -61,5 +61,5 @@ low: {}\t avg: {}\t high: {}\t
             'lowest_price': self.lowest_price,
             'avg_price': self.avg_price,
             'highest_price': self.highest_price,
-            'created_at': self.created_at
+            'recorded_at': self.recorded_at
         }
