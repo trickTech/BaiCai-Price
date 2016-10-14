@@ -40,7 +40,7 @@ def veg_spider(item_type, oldest_date=None):
             raise Exception("Oldest_date not invalid Error")
 
     stop = False
-    page = 0
+    page = 1
 
     records = []
 
@@ -133,5 +133,5 @@ def main(oldest_date=None):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         main(sys.argv[1])
-    else :
+    else:
         main()
