@@ -69,18 +69,17 @@ def veg_spider(item_type, oldest_date=None):
 
     return records
 
-
 def store_date(rows):
     counter = 0
     for row in rows:
-        item_type = \
-            ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
+        item_type = ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
         item = Item.objects.get_or_create(item_name=row['item_name'], item_unit=row['unit'], item_type=item_type,
                                           defaults={'created_at': CREATE_DATETIME})[0]
 
         row.pop('item', None)
         row.pop('item_type', None)
-        record, result = Record.objects.get_or_create(item=item, recorded_at=row['recorded_at'], defaults=row)
+        recorded_at = row.pop('recorded_at')
+        record, result = Record.objects.get_or_create(item=item, recorded_at=recorded_at, defaults=row)
         counter += 1 if result else 0
 
     logging.info('add {} records successfully'.format(counter))

@@ -18,9 +18,6 @@ class Item(models.Model):
     物品
     """
 
-    class Meta:
-        unique_together = ['item_name', 'item_type']
-
     item_name = models.CharField(max_length=16, verbose_name='商品名', db_index=True)
     item_unit = models.CharField(max_length=8, verbose_name='商品单位', default='')
     item_type = models.ForeignKey(ItemType, verbose_name='所属类型', blank=True, null=True)
@@ -34,9 +31,6 @@ class Record(models.Model):
     """
     记录
     """
-
-    class Meta:
-        unique_together = ['item', 'recorded_at']
 
     # 冗余，是否保留待商议
     item_name = models.CharField(max_length=16, default='', verbose_name='物品名', db_index=True)
@@ -52,7 +46,7 @@ class Record(models.Model):
     def __str__(self):
         return """item record: {}
 low: {}\t avg: {}\t high: {}\t
-@ {}""".format(self.item_name, self.lowest_price, self.avg_price, self.highest_price, self.created_at)
+@ {}""".format(self.item_name, self.lowest_price, self.avg_price, self.highest_price, self.recorded_at)
 
     def as_dict(self):
         return {
