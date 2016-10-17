@@ -6,7 +6,7 @@ class ItemType(models.Model):
     """
     物品所属类别
     """
-    type_name = models.CharField(max_length=16, db_index=True)
+    type_name = models.CharField(max_length=16, db_index=True, unique=True)
     created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
 
     def __str__(self):
@@ -17,8 +17,7 @@ class Item(models.Model):
     """
     物品
     """
-
-    item_name = models.CharField(max_length=16, verbose_name='商品名', db_index=True)
+    item_name = models.CharField(max_length=16, verbose_name='商品名', db_index=True, unique=True)
     item_unit = models.CharField(max_length=8, verbose_name='商品单位', default='')
     item_type = models.ForeignKey(ItemType, verbose_name='所属类型', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
@@ -32,6 +31,9 @@ class Record(models.Model):
     记录
     """
 
+    class Meta:
+        unique_together = ['item', 'recorded_at']
+
     # 冗余，是否保留待商议
     item_name = models.CharField(max_length=16, default='', verbose_name='物品名', db_index=True)
     item = models.ForeignKey(Item, verbose_name='所属物品', blank=True, null=True)
@@ -40,7 +42,7 @@ class Record(models.Model):
     lowest_price = models.IntegerField(verbose_name='最低价格')
     avg_price = models.IntegerField(verbose_name='平均价格')
     highest_price = models.IntegerField(verbose_name='最高价格')
-    recorded_at = models.DateField(verbose_name='记录日期', auto_now=True)
+    recorded_at = models.DateField(verbose_name='记录日期')
     created_at = models.DateTimeField(verbose_name='创建日期', auto_now=True)
 
     def __str__(self):

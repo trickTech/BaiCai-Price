@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vegetable.settings")
 django.setup()
+
 from django.db import transaction
 
 from search.models import (
@@ -45,8 +46,9 @@ def veg_spider(item_type, oldest_date=None):
     records = []
 
     while not stop:
-        logger.info('crawling page {} start'.format(page))
+        print('crawling page {} start'.format(page))
         url = BASE_URL.format(item_type=item_type, page=page)
+        print('url {}'.format(url))
         try:
             raw_html = requests.get(url).text
         except requests.RequestException as exc:
@@ -62,17 +64,20 @@ def veg_spider(item_type, oldest_date=None):
                 break
 
         records.extend(rows)
-        logger.info('crawling page {} success'.format(page))
+        print('crawling page {} success'.format(page))
         page += 1
 
         time.sleep(SLEEP_TIME)
 
     return records
 
+
+@transaction.atomic
 def store_date(rows):
     counter = 0
     for row in rows:
-        item_type = ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
+        item_type = \
+            ItemType.objects.get_or_create(type_name=row['item_type'], defaults={'created_at': CREATE_DATETIME})[0]
         item = Item.objects.get_or_create(item_name=row['item_name'], item_unit=row['unit'], item_type=item_type,
                                           defaults={'created_at': CREATE_DATETIME})[0]
 
@@ -82,7 +87,7 @@ def store_date(rows):
         record, result = Record.objects.get_or_create(item=item, recorded_at=recorded_at, defaults=row)
         counter += 1 if result else 0
 
-    logging.info('add {} records successfully'.format(counter))
+    print('add {} records successfully'.format(counter))
 
 
 def parse_page(raw_html, item_type):
@@ -126,6 +131,7 @@ def parse_page(raw_html, item_type):
 
 def main(oldest_date=None):
     for i in INDEX_TYPE_MAPPER:
+        print('crawling {}'.format(INDEX_TYPE_MAPPER[i]))
         records = veg_spider(i, oldest_date)
         store_date(records)
 
