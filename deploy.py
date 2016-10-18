@@ -25,7 +25,7 @@ def upload_deploy():
 
 def create_ssh_client():
     ssh_client = paramiko.SSHClient()
-    ssh_client.load_system_host_keys()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh_client.connect(IP, username=USER)
     return ssh_client
 
