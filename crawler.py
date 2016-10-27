@@ -8,8 +8,7 @@ import logging
 import time
 import sys
 
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-
+logging.basicConfig(filename='crawler.log',format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vegetable.settings")
@@ -46,9 +45,9 @@ def veg_spider(item_type, oldest_date=None):
     records = []
 
     while not stop:
-        logger.info('crawling page {} start'.format(page))
+        logging.info('crawling page {} start'.format(page))
         url = BASE_URL.format(item_type=item_type, page=page)
-        logger.info('url {}'.format(url))
+        logging.info('url {}'.format(url))
         try:
             raw_html = requests.get(url).text
         except requests.RequestException as exc:
@@ -64,7 +63,7 @@ def veg_spider(item_type, oldest_date=None):
                 break
 
         records.extend(rows)
-        logger.info('crawling page {} success'.format(page))
+        logging.info('crawling page {} success'.format(page))
         page += 1
 
         time.sleep(SLEEP_TIME)
@@ -87,7 +86,7 @@ def store_date(rows):
         record, result = Record.objects.get_or_create(item=item, recorded_at=recorded_at, defaults=row)
         counter += 1 if result else 0
 
-    logger.info('add {} records successfully'.format(counter))
+    logging.info('add {} records successfully'.format(counter))
 
 
 def parse_page(raw_html, item_type):
@@ -131,7 +130,7 @@ def parse_page(raw_html, item_type):
 
 def main(oldest_date=None):
     for i in INDEX_TYPE_MAPPER:
-        logger.info('crawling {}'.format(INDEX_TYPE_MAPPER[i]))
+        logging.info('crawling {}'.format(INDEX_TYPE_MAPPER[i]))
         records = veg_spider(i, oldest_date)
         store_date(records)
 
